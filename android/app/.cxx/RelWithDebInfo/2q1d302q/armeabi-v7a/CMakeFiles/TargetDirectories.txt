@@ -1,0 +1,2 @@
+C:/Users/mariy/fridgefinds/android/app/.cxx/RelWithDebInfo/2q1d302q/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/mariy/fridgefinds/android/app/.cxx/RelWithDebInfo/2q1d302q/armeabi-v7a/CMakeFiles/rebuild_cache.dir

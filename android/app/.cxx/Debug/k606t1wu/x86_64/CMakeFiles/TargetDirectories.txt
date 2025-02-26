@@ -1,0 +1,2 @@
+C:/Users/mariy/fridgefinds/android/app/.cxx/Debug/k606t1wu/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/mariy/fridgefinds/android/app/.cxx/Debug/k606t1wu/x86_64/CMakeFiles/rebuild_cache.dir
