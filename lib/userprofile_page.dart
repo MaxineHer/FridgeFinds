@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'notification_page.dart';
 import 'personal_info_page.dart';
+import 'faqs_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -136,7 +137,13 @@ class UserPage extends StatelessWidget {
               );
             }),
             SizedBox(height: 15),
-            _buildCustomButton(context, Icons.help_outline, 'FAQs'),
+            _buildCustomButton(context, Icons.help_outline, 'FAQs', onPressed: () {
+              // Navigate to Notifications Page
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FAQScreen()),
+              );
+            }),
             SizedBox(height: 15),
             _buildCustomButton(context, Icons.settings, 'Settings'),
             Spacer(),
