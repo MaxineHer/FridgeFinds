@@ -1,0 +1,14 @@
+{
+  "settings": "Settings",
+  "darkMode": "Dark Mode",
+  "appLanguage": "App Language",
+  "account": "Account",
+  "notifications": "Notifications",
+  "privacy": "Privacy",
+  "storageAndData": "Storage and Data",
+  "help": "Help",
+  "appUpdate": "App Update",
+  "groceryList": "Grocery List",
+  "inventoryTracker": "Inventory Tracker",
+  "expiryDetails": "Expiry Details"
+}
