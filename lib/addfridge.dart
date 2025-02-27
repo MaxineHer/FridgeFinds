@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'qrscanner.dart';
-import 'fridge_details_screen.dart';
-import 'fridge_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firebase Firestore import
+import 'qrscanner.dart'; // Your QRScannerScreen remains unchanged
+import 'fridge_details_screen.dart'; // (Optional – if you navigate there later)
+import 'fridge_model.dart'; // Ensure this model includes a toMap() method
 
 class AddFridgeQRScreen extends StatefulWidget {
   const AddFridgeQRScreen({super.key});
@@ -12,6 +13,7 @@ class AddFridgeQRScreen extends StatefulWidget {
 }
 
 class _AddFridgeQRScreenState extends State<AddFridgeQRScreen> {
+  // Popup to show after fridge is added
   void _showFridgeAddedPopup() {
     showDialog(
       context: context,
@@ -61,15 +63,35 @@ class _AddFridgeQRScreenState extends State<AddFridgeQRScreen> {
     );
   }
 
+  /// Called when "SCAN" is pressed
   Future<void> _onScanPressed() async {
     final result = await Navigator.push<String>(
       context,
       MaterialPageRoute(builder: (context) => const QRScannerScreen()),
     );
-    if (!mounted) return;
-    _showFridgeAddedPopup();
+    if (!mounted || result == null) return;
+    // Parse the scanned JSON data and store it in Firestore
+    try {
+      final data = jsonDecode(result);
+      final fridge = Fridge(
+        modelNumber: data["modelNumber"] ?? "Unknown Model",
+        serialNumber: data["serialNumber"] ?? "N/A",
+        dateOfConnection: data["dateOfConnection"] ?? "N/A",
+        isConnected: data["isConnected"] ?? false,
+        connectionStatus: data["connectionStatus"] ?? "Unknown",
+        iotStatus: data["iotStatus"] ?? "N/A",
+        linkedAccounts: data["linkedAccounts"] ?? "N/A",
+        pairingOptions: data["pairingOptions"] ?? "N/A",
+        lastSyncTime: data["lastSyncTime"] ?? "N/A",
+      );
+      await FirebaseFirestore.instance.collection('fridges').add(fridge.toMap());
+      _showFridgeAddedPopup();
+    } catch (e) {
+      debugPrint("Error parsing scanned data: $e");
+    }
   }
 
+  /// Called when "Fake JSON" is pressed for testing purposes
   void _onFakeJsonPressed() {
     const fakeJson = '''
     {
@@ -85,23 +107,24 @@ class _AddFridgeQRScreenState extends State<AddFridgeQRScreen> {
     }
     ''';
 
-    final data = jsonDecode(fakeJson);
-    final fridge = Fridge(
-      modelNumber: data["modelNumber"] ?? "Unknown Model",
-      serialNumber: data["serialNumber"] ?? "N/A",
-      dateOfConnection: data["dateOfConnection"] ?? "N/A",
-      isConnected: data["isConnected"] ?? false,
-      connectionStatus: data["connectionStatus"] ?? "Unknown",
-      iotStatus: data["iotStatus"] ?? "N/A",
-      linkedAccounts: data["linkedAccounts"] ?? "N/A",
-      pairingOptions: data["pairingOptions"] ?? "N/A",
-      lastSyncTime: data["lastSyncTime"] ?? "N/A",
-    );
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => FridgeDetailsScreen(fridge: fridge)),
-    );
+    try {
+      final data = jsonDecode(fakeJson);
+      final fridge = Fridge(
+        modelNumber: data["modelNumber"] ?? "Unknown Model",
+        serialNumber: data["serialNumber"] ?? "N/A",
+        dateOfConnection: data["dateOfConnection"] ?? "N/A",
+        isConnected: data["isConnected"] ?? false,
+        connectionStatus: data["connectionStatus"] ?? "Unknown",
+        iotStatus: data["iotStatus"] ?? "N/A",
+        linkedAccounts: data["linkedAccounts"] ?? "N/A",
+        pairingOptions: data["pairingOptions"] ?? "N/A",
+        lastSyncTime: data["lastSyncTime"] ?? "N/A",
+      );
+      FirebaseFirestore.instance.collection('fridges').add(fridge.toMap());
+      _showFridgeAddedPopup();
+    } catch (e) {
+      debugPrint("Error parsing fake JSON: $e");
+    }
   }
 
   @override
@@ -147,8 +170,7 @@ class _AddFridgeQRScreenState extends State<AddFridgeQRScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
-
-              // SCAN button
+              // SCAN button remains unchanged
               SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -171,9 +193,8 @@ class _AddFridgeQRScreenState extends State<AddFridgeQRScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 16),
-
+              // Fake JSON button remains unchanged
               SizedBox(
                 width: double.infinity,
                 height: 48,

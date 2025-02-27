@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'addfridge.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firebase Firestore
+import 'addfridge.dart'; // Contains your AddFridgeQRScreen
 import 'real_time_view_screen.dart';
+import 'fridge_details_screen.dart'; // Ensure this screen accepts fridgeDocId as a parameter
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({super.key});
@@ -13,7 +15,6 @@ class BottomNavBar extends StatelessWidget {
       unselectedItemColor: Colors.white60,
       selectedFontSize: 0,
       unselectedFontSize: 0,
-
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home, size: 30), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.list_alt, size: 30), label: ""),
@@ -47,8 +48,11 @@ class FridgeConnectivityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    // Stream from Firestore "fridges" collection
+    final Stream<QuerySnapshot> fridgeStream =
+    FirebaseFirestore.instance.collection('fridges').snapshots();
 
+    return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -67,14 +71,13 @@ class FridgeConnectivityScreen extends StatelessWidget {
         centerTitle: false,
         elevation: 0,
       ),
-
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
+              // "Add Fridge" button remains unchanged
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -83,7 +86,6 @@ class FridgeConnectivityScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(builder: (context) => const AddFridgeQRScreen()),
                     );
-
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey.shade200,
@@ -92,7 +94,6 @@ class FridgeConnectivityScreen extends StatelessWidget {
                     ),
                     elevation: 0,
                   ),
-
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: Column(
@@ -104,7 +105,6 @@ class FridgeConnectivityScreen extends StatelessWidget {
                           size: 40,
                           color: Colors.blue,
                         ),
-
                         const SizedBox(height: 8),
                         const Text(
                           'Add Fridge',
@@ -121,7 +121,7 @@ class FridgeConnectivityScreen extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // "Add User" (SECOND BUTTON)
+              // "Real Time View" button remains unchanged
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -163,9 +163,9 @@ class FridgeConnectivityScreen extends StatelessWidget {
                 ),
               ),
 
-
               const SizedBox(height: 40),
 
+              // "Connected Fridge" label remains unchanged
               const Text(
                 'Connected Fridge',
                 style: TextStyle(
@@ -175,11 +175,53 @@ class FridgeConnectivityScreen extends StatelessWidget {
                   decoration: TextDecoration.underline,
                 ),
               ),
+
+              const SizedBox(height: 16),
+
+              // List of connected fridges from Firestore
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: fridgeStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error loading fridges: ${snapshot.error}'),
+                      );
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    final docs = snapshot.data?.docs ?? [];
+                    if (docs.isEmpty) {
+                      return const Center(child: Text('No fridges connected yet.'));
+                    }
+                    return ListView.builder(
+                      itemCount: docs.length,
+                      itemBuilder: (context, index) {
+                        final doc = docs[index];
+                        final data = doc.data() as Map<String, dynamic>;
+                        return ListTile(
+                          leading: const Icon(Icons.kitchen),
+                          title: Text(data['modelNumber'] ?? 'No model'),
+                          subtitle: Text('Serial: ${data['serialNumber'] ?? 'N/A'}'),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FridgeDetailsScreen(fridgeDocId: doc.id),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
       ),
-
       bottomNavigationBar: const BottomNavBar(),
     );
   }

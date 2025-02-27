@@ -20,4 +20,34 @@ class Fridge {
     required this.pairingOptions,
     required this.lastSyncTime,
   });
+
+  // Convert a Fridge instance to a Map
+  Map<String, dynamic> toMap() {
+    return {
+      'modelNumber': modelNumber,
+      'serialNumber': serialNumber,
+      'dateOfConnection': dateOfConnection,
+      'isConnected': isConnected,
+      'connectionStatus': connectionStatus,
+      'iotStatus': iotStatus,
+      'linkedAccounts': linkedAccounts,
+      'pairingOptions': pairingOptions,
+      'lastSyncTime': lastSyncTime,
+    };
+  }
+
+  // Create a Fridge instance from a Map
+  factory Fridge.fromMap(Map<String, dynamic> map) {
+    return Fridge(
+      modelNumber: map['modelNumber'] ?? '',
+      serialNumber: map['serialNumber'] ?? '',
+      dateOfConnection: map['dateOfConnection'] ?? '',
+      isConnected: map['isConnected'] ?? false,
+      connectionStatus: map['connectionStatus'] ?? '',
+      iotStatus: map['iotStatus'] ?? '',
+      linkedAccounts: map['linkedAccounts'] ?? '',
+      pairingOptions: map['pairingOptions'] ?? '',
+      lastSyncTime: map['lastSyncTime'] ?? '',
+    );
+  }
 }
