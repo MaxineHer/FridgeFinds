@@ -32,11 +32,9 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
     "Bread": 80,
     "Yogurt": 50,
     "Milk": 60,
-    "Chicken": 40,
     "Apple": 30,
     "Cheese": 20,
     "Carrots": 10,
-    "Fish": 20,
     "Garlic": 20,
     "Biscuit": 10
   };
@@ -46,8 +44,6 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
     "Vegetables": 30,
     "Fruits": 20,
     "Dairy": 10,
-    "Meat": 5,
-    "Seafood": 5,
     "Bakery": 10,
     "Random Foods": 20,
   };
@@ -63,8 +59,6 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
         "Vegetables": (inventoryStatus["Carrots"]! + inventoryStatus["Garlic"]!) / 2, // Average inventory percentage for vegetables
         "Fruits": inventoryStatus["Apple"]!, // Example - apples are categorized as fruits
         "Dairy": (inventoryStatus["Milk"]! + inventoryStatus["Yogurt"]!)/2, // Example - milk falls under dairy
-        "Meat": inventoryStatus["Chicken"]!, // Example - chicken is categorized as meat
-        "Seafood": inventoryStatus["Fish"]!, // Placeholder for seafood
         "Bakery": inventoryStatus["Bread"]!, // Example - bread as bakery
         "Random Foods": inventoryStatus["Biscuit"]!, // Example - biscuit as random foods
       };
