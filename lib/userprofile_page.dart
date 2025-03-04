@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'notification_page.dart';
 import 'personal_info_page.dart';
-import 'faqs_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -53,7 +52,7 @@ class UserPage extends StatelessWidget {
                       },
                       child: Text(
                         'No',
-                        style: TextStyle(color: const Color(0xFFCDE1F5), fontSize: 18, fontFamily: 'Sen'),
+                        style: TextStyle(color: Colors.blue, fontSize: 18, fontFamily: 'Sen'),
                       ),
                     ),
                     TextButton(
@@ -137,13 +136,7 @@ class UserPage extends StatelessWidget {
               );
             }),
             SizedBox(height: 15),
-            _buildCustomButton(context, Icons.help_outline, 'FAQs', onPressed: () {
-              // Navigate to Notifications Page
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const FAQScreen()),
-              );
-            }),
+            _buildCustomButton(context, Icons.help_outline, 'FAQs'),
             SizedBox(height: 15),
             _buildCustomButton(context, Icons.settings, 'Settings'),
             Spacer(),
