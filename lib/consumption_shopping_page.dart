@@ -52,11 +52,8 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
     "Random Foods": 20,
   };
 
-  // Define shopping list for food items
+  // Define shopping list for food items (this will store the items added to the List Created)
   final Set<String> shoppingList = {};
-
-  // New blank list for user customization
-  final Set<String> customList = {};
 
   // Update consumption data based on inventory status (food categories)
   void updateConsumptionData() {
@@ -85,14 +82,6 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
           shoppingList.add(foodItem);
         }
       });
-    });
-  }
-
-  // Add item to custom list
-  void addToCustomList(String item) {
-    setState(() {
-      customList.add(item); // Add to custom list
-      shoppingList.remove(item); // Optionally remove it from shopping list
     });
   }
 
@@ -126,9 +115,7 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
                   chartType: ChartType.ring,
                   ringStrokeWidth: 15, // Slightly thinner ring
                   chartValuesOptions: const ChartValuesOptions(showChartValuesInPercentage: true),
-                  legendOptions: const LegendOptions(showLegends: true,
-                      legendPosition: LegendPosition.right,
-                      legendTextStyle: TextStyle(fontFamily: 'Sen')),
+                  legendOptions: const LegendOptions(showLegends: true, legendPosition: LegendPosition.right),
                   colorList: [
                     Colors.green, // Vegetables
                     Colors.red, // Fruits
@@ -149,11 +136,6 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
 
               // List Created section (Single grocery list showing food items)
               _buildGroceryList(),
-
-              const SizedBox(height: 30),
-
-              // New Blank List for the user to add items
-              _buildCustomList(),
             ],
           ),
         ),
@@ -197,7 +179,7 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: ElevatedButton(
-                    onPressed: () => addToCustomList(item),
+                    onPressed: () => addToShoppingList(item),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent, // Make the button background transparent
                       shadowColor: Colors.transparent, // Remove button shadow
@@ -255,7 +237,7 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
                   ),
                   backgroundColor: Colors.blue[100],
                   deleteIcon: const Icon(Icons.delete, size: 18),
-                  onDeleted: () => toggleItem(item),
+                  onDeleted: () => removeFromShoppingList(item),
                 );
               }).toList(),
             ),
@@ -272,62 +254,17 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
     );
   }
 
-  // Custom List Section (for adding items from suggestions)
-  Widget _buildCustomList() {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Your Custom List",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'PlayfairDisplay'),
-            ),
-            const SizedBox(height: 10),
-            // Display the custom list with checkmarks
-            Wrap(
-              spacing: 10,
-              children: customList.map((item) {
-                return Chip(
-                  label: Text(item,
-                    style: const TextStyle(fontFamily: 'Sen'),
-                  ),
-                  backgroundColor: Colors.blue[100],
-                  deleteIcon: const Icon(Icons.delete, size: 18),
-                  onDeleted: () {
-                    setState(() {
-                      customList.remove(item); // Remove item from the custom list
-                    });
-                  },
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 10),
-            // If no items in the list
-            if (customList.isEmpty)
-              const Text(
-                "No items added to your custom list yet.",
-                style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey, fontFamily: 'Sen'),
-              ),
-          ],
-        ),
-      ),
-    );
+  // Add item to the shopping list
+  void addToShoppingList(String item) {
+    setState(() {
+      shoppingList.add(item); // Add item to the shopping list
+    });
   }
 
-  // Toggle item in the grocery list
-  void toggleItem(String item) {
+  // Remove item from the shopping list
+  void removeFromShoppingList(String item) {
     setState(() {
-      if (shoppingList.contains(item)) {
-        shoppingList.remove(item);
-      } else {
-        shoppingList.add(item);
-      }
+      shoppingList.remove(item); // Remove item from the shopping list
     });
   }
 }
@@ -355,7 +292,8 @@ class BottomNavigation extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomeScreen(userName: 'User'), // Home screen page
+                  builder: (context) =>
+                  const HomeScreen(userName: 'User'), // Home screen page
                 ),
               );
             },
