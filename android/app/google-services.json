@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "530777094229",
+    "firebase_url": "https://fridgefinds-orion-default-rtdb.firebaseio.com",
+    "project_id": "fridgefinds-orion",
+    "storage_bucket": "fridgefinds-orion.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530777094229:android:c863c51ce62d92f7ff3cdc",
+        "android_client_info": {
+          "package_name": "com.example.fridge_finds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "530777094229-dgo0qra3daoa9tadnk72ncgh0940o5u8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfbFbFrLUJo8F9NlNoNigeW1ejJEOJNPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "530777094229-dgo0qra3daoa9tadnk72ncgh0940o5u8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "530777094229-is68te3mmnq10l4rl25uepbjvqll6uo3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fridgefinds"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530777094229:android:b00f923d77e5d11aff3cdc",
+        "android_client_info": {
+          "package_name": "com.example.fridgefinds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "530777094229-ts1meni4a3akl4bio7nldk7b0t06c6lu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fridgefinds",
+            "certificate_hash": "5a7675aefce1d413b0e064382206b08741c1973a"
+          }
+        },
+        {
+          "client_id": "530777094229-dgo0qra3daoa9tadnk72ncgh0940o5u8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfbFbFrLUJo8F9NlNoNigeW1ejJEOJNPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "530777094229-dgo0qra3daoa9tadnk72ncgh0940o5u8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "530777094229-is68te3mmnq10l4rl25uepbjvqll6uo3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fridgefinds"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
