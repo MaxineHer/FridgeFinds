@@ -8,6 +8,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:530777094229:android:c863c51ce62d92f7ff3cdc",
+        "android_client_info": {
+          "package_name": "com.example.fridge_finds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "530777094229-dgo0qra3daoa9tadnk72ncgh0940o5u8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfbFbFrLUJo8F9NlNoNigeW1ejJEOJNPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "530777094229-dgo0qra3daoa9tadnk72ncgh0940o5u8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "530777094229-is68te3mmnq10l4rl25uepbjvqll6uo3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fridgefinds"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:530777094229:android:b00f923d77e5d11aff3cdc",
         "android_client_info": {
           "package_name": "com.example.fridgefinds"

@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'notification_page.dart';
 import 'userprofile_page.dart';
 import 'consumption_shopping_page.dart';
+import 'vaish-branch/grocery_list.dart';
+import 'vaish-branch/expiry_details.dart';
+import 'vaish-branch/inventory_tracking.dart';
+import 'tahera-branch/real_time_view_screen.dart';
+import 'tahera-branch/fridgecon1.dart';
 
 class FeatureItem {
   final IconData icon;
@@ -30,27 +35,62 @@ class HomeScreenState extends State<HomeScreen> {
     FeatureItem(
       icon: Icons.inventory,
       title: 'Inventory Tracking',
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const InventoryTrackingScreen(),
+          ),
+        );
+      },
     ),
     FeatureItem(
       icon: Icons.timer,
       title: 'Expiry Tracking',
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ExpiryDetailsScreen(),
+          ),
+        );
+      },
     ),
     FeatureItem(
       icon: Icons.wifi,
       title: 'Fridge Connectivity',
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const FridgeConnectivityScreen(),
+          ),
+        );
+      },
     ),
     FeatureItem(
       icon: Icons.visibility,
       title: 'Fridge View',
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const RealTimeViewScreen(),
+          ),
+        );
+      },
     ),
     FeatureItem(
       icon: Icons.list,
       title: 'Grocery Lists',
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const GroceryListScreen(),
+          ),
+        );
+      },
     ),
     FeatureItem(
       icon: Icons.shopping_cart,
@@ -332,7 +372,12 @@ class BottomNavigation extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              // Navigate to grocery lists
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const GroceryListScreen(),
+                ),
+              );
             },
             icon: const Icon(Icons.list, color: Colors.white, size: 32),
           ),

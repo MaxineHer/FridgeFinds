@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:provider/provider.dart';
 import 'home_page.dart';
 import 'notification_page.dart';
 import 'personal_info_page.dart';
+import 'tahera-branch/tmain.dart';
+import 'tahera-branch/adduser.dart';
+import 'tahera-branch/fridge_details_screen.dart';
+import 'vaish-branch/vmain.dart';
+import 'hira-branch/login.dart';
+import 'vaish-branch/grocery_list.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,9 +20,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: UserPage(key: Key('userPage')),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => LanguageProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: UserPage(key: Key('userPage')),
+      ),
     );
   }
 }
@@ -58,7 +72,11 @@ class UserPage extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         // Handle logout logic here (e.g., clear data, etc.)
-                        Navigator.of(context).pop(); // Close the dialog
+                        Navigator.of(context).pop();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Login()),
+                        );// Close the dialog
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('User logged out')),
                         );
@@ -87,7 +105,7 @@ class UserPage extends StatelessWidget {
         elevation: 0,
         title: null,
         automaticallyImplyLeading: false, // Disable back arrow automatically
-     ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -124,9 +142,12 @@ class UserPage extends StatelessWidget {
               );
             }),
             SizedBox(height: 20),
-            _buildCustomButton(context, Icons.person_add, 'Add New User'),
-            SizedBox(height: 15),
-            _buildCustomButton(context, Icons.kitchen, 'Fridge Details'),
+            _buildCustomButton(context, Icons.person_add, 'Add New User', onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddUserScreen()),
+              );
+            }),
             SizedBox(height: 15),
             _buildCustomButton(context, Icons.notifications, 'Notifications', onPressed: () {
               // Navigate to Notifications Page
@@ -136,9 +157,20 @@ class UserPage extends StatelessWidget {
               );
             }),
             SizedBox(height: 15),
-            _buildCustomButton(context, Icons.help_outline, 'FAQs'),
+            _buildCustomButton(context, Icons.help_outline, 'FAQs', onPressed: () {
+              // Navigate to Notifications Page
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FAQScreen()),
+              );
+            }),
             SizedBox(height: 15),
-            _buildCustomButton(context, Icons.settings, 'Settings'),
+            _buildCustomButton(context, Icons.settings, 'Settings', onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>  SettingsScreen(children: [],)),
+              );
+            }),
             Spacer(),
             SizedBox(height: 20),
             // Logout Button
@@ -215,7 +247,12 @@ class BottomNavigation extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              // Navigate to grocery lists
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const GroceryListScreen(),
+                ),
+              );
             },
             icon: const Icon(Icons.list, color: Colors.white, size: 32),
           ),

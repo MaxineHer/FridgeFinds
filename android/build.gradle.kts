@@ -1,18 +1,7 @@
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath("com.google.gms:google-services:4.3.10")  // Firebase services classpath
-        classpath("dev.flutter:flutter-gradle-plugin:1.0.0")  // Flutter plugin classpath
-    }
-}
-
 allprojects {
     repositories {
         google()  // Add Google repository for all subprojects
-        mavenCentral()  // Add Maven Central repository for all subprojects
+        mavenCentral()
     }
 }
 
