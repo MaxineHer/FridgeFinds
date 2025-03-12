@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'register.dart';
-import 'verification.dart';
+import 'signupsuccess.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -10,11 +11,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false; // Track password visibility
 
-  void _validateLogin() {
+  Future<void> _validateLogin() async {
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
 
@@ -28,7 +30,29 @@ class _LoginState extends State<Login> {
       return;
     }
 
-    _showSuccessDialog("Login Successful", "Welcome to FridgeFinds!");
+    try {
+      // Firebase Authentication: Sign in user
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      // Navigate to Signup Success Page ////////// HAS TO CHANGE TO GO TO HOMESCREEN
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SignupSuccess(name: "User")),
+        );
+
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        _showErrorDialog("User Not Found", "No account found with this email.");
+      } else if (e.code == 'wrong-password') {
+        _showErrorDialog("Incorrect Password", "Please check your password and try again.");
+      } else {
+        _showErrorDialog("Login Error", e.message ?? "Something went wrong.");
+      }
+    } catch (e) {
+      _showErrorDialog("Error", "An unexpected error occurred.");
+    }
   }
 
   bool _isValidEmail(String email) {
@@ -41,24 +65,6 @@ class _LoginState extends State<Login> {
       builder: (context) {
         return AlertDialog(
           title: Text(title, style: const TextStyle(color: Colors.blue)),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showSuccessDialog(String title, String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(title, style: const TextStyle(color: Colors.green)),
           content: Text(message),
           actions: [
             TextButton(
@@ -277,7 +283,7 @@ class _LoginState extends State<Login> {
               ],
             ),
 
-            const SizedBox(height: 40), // Extra space to prevent keyboard overlap
+            const SizedBox(height: 40),
           ],
         ),
       ),

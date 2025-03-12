@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
-import 'verification.dart';
-import 'signupsuccess.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -11,12 +11,15 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<Register> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isPasswordVisible = false; // Password visibility toggle
+  bool _isPasswordVisible = false;
 
-  void _validateRegistration() {
+  Future<void> _registerUser() async {
     String name = _nameController.text.trim();
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
@@ -36,12 +39,46 @@ class _RegisterPageState extends State<Register> {
       return;
     }
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Verification(email: email, name: name), // Pass name
-      ),
-    );
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Save user info in Firestore
+      await _firestore.collection('users').doc(userCredential.user!.uid).set({
+        'name': name,
+        'email': email,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      // Show success message and navigate to login page
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Registration successful! Please log in."),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 3),
+          ),
+        );
+
+        // Navigate back to the Login Page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Login()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        _showErrorDialog("Weak Password", "Password provided is too weak.");
+      } else if (e.code == 'email-already-in-use') {
+        _showErrorDialog("Email Already Exists", "An account with this email already exists.");
+      } else {
+        _showErrorDialog("Registration Error", e.message ?? "Something went wrong.");
+      }
+    } catch (e) {
+      _showErrorDialog("Error", "An unexpected error occurred.");
+    }
   }
 
   bool _isValidEmail(String email) {
@@ -207,7 +244,7 @@ class _RegisterPageState extends State<Register> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: _validateRegistration, // ✅ Fixed function call
+                        onPressed: _registerUser, // ✅ Calls Firebase function
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFA7C7E7),
                           shape: RoundedRectangleBorder(
@@ -220,22 +257,6 @@ class _RegisterPageState extends State<Register> {
                         ),
                       ),
                     ),
-
-                    const SizedBox(height: 15),
-
-                    // **OR Divider**
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Or'),
-                        const SizedBox(width: 10),
-                        Image.asset(
-                          'assets/google_icon.webp',
-                          width: 24,
-                          height: 24,
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
@@ -244,35 +265,20 @@ class _RegisterPageState extends State<Register> {
             const SizedBox(height: 20),
 
             // **Already have an account? LOGIN**
-            Column(
-              children: [
-                const Text(
-                  "Already have an account?",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center,
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                "Already have an account? LOGIN",
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context); // Closes Register Page & returns to Login Page
-                  },
-                  child: const Text(
-                    "LOGIN",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
+                textAlign: TextAlign.center,
+              ),
             ),
-
-            const SizedBox(height: 40), // Extra space to prevent keyboard overlap
           ],
         ),
       ),
