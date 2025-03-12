@@ -12,6 +12,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false; // Track password visibility
 
   void _validateLogin() {
     String email = _emailController.text.trim();
@@ -159,13 +160,22 @@ class _LoginState extends State<Login> {
                     ),
                     const SizedBox(height: 15),
 
-                    // **Password Field**
+                    // **Password Field with Visibility Toggle**
                     TextField(
                       controller: _passwordController,
-                      obscureText: true,
+                      obscureText: !_isPasswordVisible, // Toggle visibility
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.lock),
-                        suffixIcon: const Icon(Icons.visibility_off),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                        ),
                         hintText: 'Password',
                         filled: true,
                         fillColor: Colors.grey[200],
@@ -274,6 +284,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-
-
-

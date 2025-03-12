@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>530777094229-pqvbd6hr0hr03fd2g771npfrgl03hf7k.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.530777094229-pqvbd6hr0hr03fd2g771npfrgl03hf7k</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>530777094229-ts1meni4a3akl4bio7nldk7b0t06c6lu.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCh8eagMJCqLOMaWNOv3d3ynYsbN5Y-PVw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>530777094229</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.fridgeFinds</string>
+	<key>PROJECT_ID</key>
+	<string>fridgefinds-orion</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fridgefinds-orion.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:530777094229:ios:4f249e6eff17dee0ff3cdc</string>
+	<key>DATABASE_URL</key>
+	<string>https://fridgefinds-orion-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

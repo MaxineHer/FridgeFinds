@@ -14,6 +14,7 @@ class _RegisterPageState extends State<Register> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false; // Password visibility toggle
 
   void _validateRegistration() {
     String name = _nameController.text.trim();
@@ -41,7 +42,6 @@ class _RegisterPageState extends State<Register> {
         builder: (context) => Verification(email: email, name: name), // Pass name
       ),
     );
-
   }
 
   bool _isValidEmail(String email) {
@@ -174,13 +174,22 @@ class _RegisterPageState extends State<Register> {
                     ),
                     const SizedBox(height: 15),
 
-                    // **Password Field**
+                    // **Password Field with Visibility Toggle**
                     TextField(
                       controller: _passwordController,
-                      obscureText: true,
+                      obscureText: !_isPasswordVisible, // Toggle visibility
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.lock),
-                        suffixIcon: const Icon(Icons.visibility_off),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                        ),
                         hintText: 'Password',
                         filled: true,
                         fillColor: Colors.grey[200],
@@ -264,7 +273,6 @@ class _RegisterPageState extends State<Register> {
             ),
 
             const SizedBox(height: 40), // Extra space to prevent keyboard overlap
-
           ],
         ),
       ),
