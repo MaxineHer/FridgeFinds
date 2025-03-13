@@ -48,34 +48,37 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
   // Fetch monthly consumption from Raspberry Pi
   Future<void> fetchConsumptionData() async {
     try {
+      print("Connecting to Raspberry Pi at: $raspberryPiUrl"); // Debug message
+
       final response = await http.get(Uri.parse(raspberryPiUrl));
 
+      print("Response Status Code: ${response.statusCode}"); // Check HTTP status
+
       if (response.statusCode == 200) {
+        print("Connected successfully! Data received:");
+        print(response.body); // Print actual data from API
+
         final Map<String, dynamic> consumptionData = json.decode(response.body);
 
-        // Convert data for Pie Chart
         setState(() {
           dataMap = {
-            "Vegetables": consumptionData["Vegetables"].toDouble(),
-            "Fruits": consumptionData["Fruits"].toDouble(),
+            "Beverages": consumptionData["Beverages"].toDouble(),
+            "Poultry": consumptionData["Poultry"].toDouble(),
             "Dairy": consumptionData["Dairy"].toDouble(),
-            "Bakery": consumptionData["Bakery"].toDouble(),
-            "Random Foods": consumptionData["Random"].toDouble(),
+            "Snacks": consumptionData["Snacks"].toDouble(),
+            "Condiments": consumptionData["Condiments"].toDouble(),
           };
         });
 
-        // Generate Smart Shopping List based on low inventory
-        generateShoppingList(consumptionData);
-
-        // Store data in Firebase
         await _firestore.collection("monthly_consumption").doc("March2025").set(dataMap);
       } else {
-        print("Error fetching data from Raspberry Pi");
+        print("Failed to connect! Status Code: ${response.statusCode}");
       }
     } catch (e) {
-      print("Exception: $e");
+      print("Exception occurred: $e");
     }
   }
+
 
   // Generate Smart Shopping List based on low consumption
   void generateShoppingList(Map<String, dynamic> consumptionData) {
