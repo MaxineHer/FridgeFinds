@@ -52,7 +52,7 @@ class _LoginState extends State<Login> {
     }
   }
 
-  // ✅ Forgot Password Function
+  //Forgot Password Function
   Future<void> _forgotPassword() async {
     TextEditingController resetEmailController = TextEditingController();
 
@@ -196,7 +196,7 @@ class _LoginState extends State<Login> {
                     const Text('Login', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 20),
 
-                    // ✅ Email Field with Matching Style
+                    // Email Field
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                       decoration: BoxDecoration(
@@ -214,7 +214,7 @@ class _LoginState extends State<Login> {
                     ),
                     const SizedBox(height: 15),
 
-                    // ✅ Password Field with Matching Style
+                    // Password Field
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                       decoration: BoxDecoration(
@@ -241,7 +241,7 @@ class _LoginState extends State<Login> {
 
                     const SizedBox(height: 10),
 
-                    // **Login Button (Styled)**
+                    // Login Button
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -260,7 +260,7 @@ class _LoginState extends State<Login> {
                     const SizedBox(height: 20),
                     GestureDetector(
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Register())),
-                      child: const Text("Don't have an account? REGISTER!", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+                      child: const Text("Don't have an account? REGISTER", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
