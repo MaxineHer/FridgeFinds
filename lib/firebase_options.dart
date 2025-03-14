@@ -41,7 +41,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBhiQJTUA6YdK0JA8xqyY9nI2dVzzBpAKk',
+    apiKey: 'AIzaSyDfbFbFrLUJo8F9NINoNigeW1ejJEOJNPs',
     appId: '1:530777094229:web:0a983e83465dfa1fff3cdc',
     messagingSenderId: '530777094229',
     projectId: 'fridgefinds-orion',

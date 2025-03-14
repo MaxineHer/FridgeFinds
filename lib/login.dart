@@ -14,7 +14,7 @@ class _LoginState extends State<Login> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isPasswordVisible = false; // Track password visibility
+  bool _isPasswordVisible = false;
 
   Future<void> _validateLogin() async {
     String email = _emailController.text.trim();
@@ -31,16 +31,13 @@ class _LoginState extends State<Login> {
     }
 
     try {
-      // Firebase Authentication: Sign in user
       await _auth.signInWithEmailAndPassword(email: email, password: password);
 
-      // Navigate to Signup Success Page ////////// HAS TO CHANGE TO GO TO HOMESCREEN
       if (mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => SignupSuccess(name: "User")),
         );
-
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -55,6 +52,51 @@ class _LoginState extends State<Login> {
     }
   }
 
+  // ✅ Forgot Password Function
+  Future<void> _forgotPassword() async {
+    TextEditingController resetEmailController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Reset Password", style: TextStyle(color: Colors.blue)),
+          content: TextField(
+            controller: resetEmailController,
+            decoration: const InputDecoration(
+              hintText: "Enter your email",
+            ),
+            keyboardType: TextInputType.emailAddress,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () async {
+                String resetEmail = resetEmailController.text.trim();
+                if (resetEmail.isEmpty || !_isValidEmail(resetEmail)) {
+                  _showErrorDialog("Invalid Email", "Please enter a valid email address.");
+                  return;
+                }
+
+                try {
+                  await _auth.sendPasswordResetEmail(email: resetEmail);
+                  Navigator.pop(context);
+                  _showSuccessDialog("Recovery Email Sent", "Check your inbox for password reset instructions.");
+                } on FirebaseAuthException catch (e) {
+                  _showErrorDialog("Reset Error", e.message ?? "Something went wrong.");
+                }
+              },
+              child: const Text("Send"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   bool _isValidEmail(String email) {
     return email.contains('@') && email.contains('.');
   }
@@ -64,7 +106,25 @@ class _LoginState extends State<Login> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(title, style: const TextStyle(color: Colors.blue)),
+          title: Text(title, style: const TextStyle(color: Colors.red)),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showSuccessDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title, style: const TextStyle(color: Colors.green)),
           content: Text(message),
           actions: [
             TextButton(
@@ -85,13 +145,12 @@ class _LoginState extends State<Login> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
           children: [
-            // **Custom Curved Background**
             Stack(
               children: [
                 ClipPath(
                   child: Container(
                     height: 280,
-                    color: const Color(0xFFA7C7E7), // Light Blue Background
+                    color: const Color(0xFFA7C7E7),
                   ),
                 ),
                 Positioned(
@@ -110,11 +169,7 @@ class _LoginState extends State<Login> {
                       const SizedBox(height: 10),
                       const Text(
                         'FridgeFinds',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
                       ),
                     ],
                   ),
@@ -124,7 +179,6 @@ class _LoginState extends State<Login> {
 
             const SizedBox(height: 20),
 
-            // **Login Form Container**
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Container(
@@ -133,85 +187,61 @@ class _LoginState extends State<Login> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      blurRadius: 8,
-                      spreadRadius: 2,
-                      offset: const Offset(0, 4),
-                    ),
+                    BoxShadow(color: Colors.grey.withOpacity(0.2), blurRadius: 8, spreadRadius: 2, offset: const Offset(0, 4)),
                   ],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Login',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    const Text('Login', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 20),
 
-                    // **Email Field**
-                    TextField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.email),
-                        hintText: 'example@gmail.com',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                    // ✅ Email Field with Matching Style
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: TextField(
+                        controller: _emailController,
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.email, color: Colors.black54),
+                          hintText: 'example@gmail.com',
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
                     const SizedBox(height: 15),
 
-                    // **Password Field with Visibility Toggle**
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: !_isPasswordVisible, // Toggle visibility
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.lock),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    // ✅ Password Field with Matching Style
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: TextField(
+                        controller: _passwordController,
+                        obscureText: !_isPasswordVisible,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.lock, color: Colors.black54),
+                          suffixIcon: IconButton(
+                            icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off, color: Colors.black54),
+                            onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _isPasswordVisible = !_isPasswordVisible;
-                            });
-                          },
-                        ),
-                        hintText: 'Password',
-                        filled: true,
-                        fillColor: Colors.grey[200],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
+                          hintText: 'Password',
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
 
                     const SizedBox(height: 10),
-
-                    // **Forgot Password**
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Forget Password?',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
+                    Align(alignment: Alignment.centerRight, child: TextButton(onPressed: _forgotPassword, child: const Text("Forgot Password?"))),
 
                     const SizedBox(height: 10),
 
-                    // **Login Button**
+                    // **Login Button (Styled)**
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -223,67 +253,19 @@ class _LoginState extends State<Login> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
+                        child: const Text("Login", style: TextStyle(color: Colors.white, fontSize: 18)),
                       ),
                     ),
 
-                    const SizedBox(height: 15),
-
-                    // **OR Divider**
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Or'),
-                        const SizedBox(width: 10),
-                        Image.asset(
-                          'assets/google_icon.webp',
-                          width: 24,
-                          height: 24,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Text("Google icon not found", style: TextStyle(color: Colors.red));
-                          },
-                        ),
-                      ],
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Register())),
+                      child: const Text("Don't have an account? REGISTER", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
               ),
             ),
-
-            const SizedBox(height: 20),
-
-            // **REGISTER Link**
-            Column(
-              children: [
-                const Text(
-                  "Don’t have an account?",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Register()),
-                    );
-                  },
-                  child: const Text(
-                    "REGISTER",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 40),
           ],
         ),
       ),
