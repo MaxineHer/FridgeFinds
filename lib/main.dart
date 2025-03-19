@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Playfair_Display', // Custom Font
+                  fontFamily: 'PlayfairDisplay', // Custom Font
                 ),
               ),
 

@@ -169,7 +169,7 @@ class _LoginState extends State<Login> {
                       const SizedBox(height: 10),
                       const Text(
                         'FridgeFinds',
-                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black,fontFamily: 'PlayfairDisplay'),
                       ),
                     ],
                   ),
@@ -193,7 +193,7 @@ class _LoginState extends State<Login> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text('Login', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    const Text('Login', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,fontFamily: 'PlayfairDisplay')),
                     const SizedBox(height: 20),
 
                     // Email Field

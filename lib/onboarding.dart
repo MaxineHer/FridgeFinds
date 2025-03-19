@@ -43,7 +43,7 @@ class Onboarding extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 25, // Increased size for better visibility
-                        fontFamily: 'fonts/PlayfairDisplay-Bold.ttf',
+                        fontFamily: 'PlayfairDisplay',
                         fontWeight: FontWeight.w700,
                         height: 1.31, // Adjusted line height
                       ),
