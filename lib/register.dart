@@ -139,7 +139,7 @@ class _RegisterPageState extends State<Register> {
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,fontFamily: 'PlayfairDisplay'
+                          color: Colors.black,
                         ),
                       ),
                     ],
@@ -150,7 +150,7 @@ class _RegisterPageState extends State<Register> {
 
             const SizedBox(height: 20),
 
-            // Registration Form Container
+            // **Registration Form Container**
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Container(
@@ -174,7 +174,7 @@ class _RegisterPageState extends State<Register> {
                       'Register',
                       style: TextStyle(
                         fontSize: 24,
-                        fontWeight: FontWeight.bold,fontFamily: 'PlayfairDisplay'
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -211,10 +211,10 @@ class _RegisterPageState extends State<Register> {
                     ),
                     const SizedBox(height: 15),
 
-                    // Password Field with Visibility Toggle
+                    // **Password Field with Visibility Toggle**
                     TextField(
                       controller: _passwordController,
-                      obscureText: !_isPasswordVisible,
+                      obscureText: !_isPasswordVisible, // Toggle visibility
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.lock),
                         suffixIcon: IconButton(
@@ -239,12 +239,12 @@ class _RegisterPageState extends State<Register> {
 
                     const SizedBox(height: 20),
 
-                    // Create Account Button
+                    // **Create Account Button**
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: _registerUser,
+                        onPressed: _registerUser, // ✅ Calls Firebase function
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFA7C7E7),
                           shape: RoundedRectangleBorder(
@@ -264,7 +264,7 @@ class _RegisterPageState extends State<Register> {
 
             const SizedBox(height: 20),
 
-            //
+            // **Already have an account? LOGIN**
             GestureDetector(
               onTap: () {
                 Navigator.pop(context);
@@ -285,4 +285,3 @@ class _RegisterPageState extends State<Register> {
     );
   }
 }
-

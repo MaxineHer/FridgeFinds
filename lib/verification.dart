@@ -62,7 +62,7 @@ class _VerificationPageState extends State<Verification> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SignupSuccess(name: widget.name), // ✅ Pass name correctly
+                    builder: (context) => SignupSuccess(name: widget.name), 
                   ),
                 );
               },
