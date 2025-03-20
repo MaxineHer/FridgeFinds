@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'register.dart';
 import 'signupsuccess.dart';
+import 'package:fridge_finds/manasvi-branch/home_page.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -36,7 +37,7 @@ class _LoginState extends State<Login> {
       if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => SignupSuccess(name: "User")),
+          MaterialPageRoute(builder: (context) => HomeScreen(userName: "User")),
         );
       }
     } on FirebaseAuthException catch (e) {
