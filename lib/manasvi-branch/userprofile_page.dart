@@ -117,7 +117,7 @@ class UserPage extends StatelessWidget {
             ),
             SizedBox(height: 10), // Reduced space between picture and name
             Text(
-              'Jane Doe',
+              '',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,

@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:pie_chart/pie_chart.dart';
+import 'package:fridge_finds/vaish-branch/grocery_list.dart';
 import 'home_page.dart';
 import 'userprofile_page.dart';
-
 
 class ConsumptionScreen extends StatefulWidget {
   const ConsumptionScreen({super.key});
@@ -30,7 +28,7 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
 
   Future<void> fetchItemCategoryPercentages() async {
     try {
-      final response = await http.get(Uri.parse("$apiUrl&get=ItemCategoryPercentagesOutside"));
+      final response = await http.get(Uri.parse("$apiUrl&get=ItemCategoryPercentagesInside"));
       if (response.statusCode == 200) {
         final List<dynamic> decodedResponse = json.decode(response.body);
         Map<String, double> parsedData = {};
@@ -63,28 +61,31 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
       if (response.statusCode == 200) {
         String responseBody = response.body.trim();
 
-        //  Print the raw response for debugging
+        // Print raw response for debugging
         print("📥 Raw API Response: $responseBody");
 
-        //  Extract only the shopping list portion
+        // Locate the start of the second JSON array (Smart Shopping List)
         int splitIndex = responseBody.indexOf("][[");
-        if (splitIndex != -1) {
-          responseBody = responseBody.substring(splitIndex + 1).trim(); // Extract shopping list
+        if (splitIndex == -1) {
+          print("⚠️ JSON format not as expected! Unable to find '][[' separator.");
+          return;
         }
 
-        //  Replace single quotes with double quotes to fix JSON decoding
-        responseBody = responseBody.replaceAll("'", "\"");
+        //  Extract only the shopping list JSON portion
+        String shoppingListJson = responseBody.substring(splitIndex + 1).trim();
 
-        //  Ensure the response is correctly formatted
-        while (responseBody.startsWith("[[") && responseBody.endsWith("]]")) {
-          responseBody = responseBody.substring(1, responseBody.length - 1);
-        }
+        //  Fix JSON formatting by replacing single quotes with double quotes
+        shoppingListJson = shoppingListJson.replaceAll("'", "\"");
+
+        //  Ensure it is properly enclosed in brackets
+        if (!shoppingListJson.startsWith("[")) shoppingListJson = "[$shoppingListJson]";
+        if (!shoppingListJson.endsWith("]")) shoppingListJson = "$shoppingListJson]";
 
         //  Decode JSON safely
         dynamic responseData;
         try {
-          responseData = json.decode(responseBody);
-          print("✅ Decoded JSON Successfully!");
+          responseData = json.decode(shoppingListJson);
+          print(" Decoded JSON Successfully!");
         } catch (e) {
           print("❌ JSON Decode Error: $e");
           return;
@@ -92,7 +93,7 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
 
         List<String> extractedItems = [];
 
-        // Process only items with `itemQuantity == 0`
+        //  Process only items with itemQuantity == 0
         if (responseData is List) {
           for (var element in responseData) {
             if (element is List) {
@@ -101,8 +102,8 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
                     subElement.containsKey('itemName') &&
                     subElement.containsKey('itemQuantity')) {
                   int quantity = int.tryParse(subElement['itemQuantity'].toString()) ?? -1;
-                  print("🔍 Found Item: ${subElement['itemName']} - Quantity: $quantity");
                   if (quantity == 0) {
+                    print("🔍 Found Item: ${subElement['itemName']} - Quantity: $quantity");
                     extractedItems.add(subElement['itemName'].toString());
                   }
                 }
@@ -119,7 +120,7 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
           shoppingList = extractedItems;
         });
 
-        print("📌 Final Shopping List: $shoppingList");
+        print("📌 Final Smart Shopping List: $shoppingList");
       } else {
         print("❌ Error: Failed to fetch shopping list. Status: ${response.statusCode}");
       }
@@ -127,6 +128,7 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
       print("❌ Exception while fetching Smart Shopping List: $e");
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -169,12 +171,12 @@ class ConsumptionScreenState extends State<ConsumptionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Smart Shopping List", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text("Smart Shopping List", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'PlayfairDisplay')),
             const SizedBox(height: 10),
-            const Text("Items running low based on consumption data", style: TextStyle(fontSize: 14, color: Colors.blue)),
+            const Text("Items running low based on consumption data", style: TextStyle(fontSize: 14, color: Colors.blue, fontFamily: 'Sen')),
             const SizedBox(height: 20),
             if (shoppingList.isEmpty)
-              const Text("No items to buy. Your inventory is sufficient.", style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey))
+              const Text("No items to buy. Your inventory is sufficient.", style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey, fontFamily: 'Sen'))
             else
               Column(
                 children: shoppingList.map((item) {
@@ -214,7 +216,9 @@ class BottomNavigation extends StatelessWidget {
             },
             icon: const Icon(Icons.home, color: Colors.white, size: 32),
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.list, color: Colors.white, size: 32)),
+          IconButton(onPressed: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const GroceryListScreen()));
+          }, icon: const Icon(Icons.list, color: Colors.white, size: 32)),
           IconButton(
             onPressed: () {
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UserPage()));

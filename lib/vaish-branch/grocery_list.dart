@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'list_screen.dart';
 import 'package:fridge_finds/manasvi-branch/home_page.dart';
 import 'package:fridge_finds/manasvi-branch/userprofile_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GroceryListScreen extends StatefulWidget {
   const GroceryListScreen({Key? key}) : super(key: key);
@@ -207,7 +208,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
 
                         IconButton(
                           icon: Icon(Icons.delete, color: Colors.red),
-                          onPressed: () => _deleteList(doc.id), // ✅ Corrected deletion logic
+                          onPressed: () => _deleteList(doc.id), //  Corrected deletion logic
                         ),
                       ],
                     ),

@@ -195,7 +195,7 @@ class WelcomeHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 15),
+          const SizedBox(height: 25),
           RichText(
             text: TextSpan(
               style: const TextStyle(
@@ -207,7 +207,7 @@ class WelcomeHeader extends StatelessWidget {
               children: [
                 const TextSpan(text: 'Welcome\n'),
                 TextSpan(
-                  text: 'Jane Doe',
+
                   style: const TextStyle(
                     fontFamily: 'PlayfairDisplay',
                     color: Color(0xFF335ACE),
@@ -216,7 +216,7 @@ class WelcomeHeader extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 7),
+
           const Text(
             'Where smart fridge management meets personalized convenience!',
             style: TextStyle(
