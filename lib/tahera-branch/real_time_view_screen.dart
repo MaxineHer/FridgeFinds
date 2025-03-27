@@ -67,7 +67,7 @@ class _RealTimeViewScreenState extends State<RealTimeViewScreen> {
                       MaterialPageRoute(
                         builder: (_) => const ExpandedShelfScreen(
                           shelfName: 'Top Shelf',
-                          streamUrl: 'http://10.115.0.140:8081/picamera',
+                          streamUrl: 'http://10.115.0.140:8081/stream.mjpg',
                         ),
                       ),
                     );
@@ -82,7 +82,7 @@ class _RealTimeViewScreenState extends State<RealTimeViewScreen> {
                       MaterialPageRoute(
                         builder: (_) => const ExpandedShelfScreen(
                           shelfName: 'Middle Shelf',
-                          streamUrl: 'http://10.115.0.140:8081/usbcamera1',
+                          streamUrl: 'http://10.115.0.140:8082/stream.mjpg',
                         ),
                       ),
                     );
@@ -97,7 +97,7 @@ class _RealTimeViewScreenState extends State<RealTimeViewScreen> {
                       MaterialPageRoute(
                         builder: (_) => const ExpandedShelfScreen(
                           shelfName: 'Bottom Shelf',
-                          streamUrl: 'http://10.115.0.140:8081/usbcamera2',
+                          streamUrl: 'http://10.115.0.140:8083/stream.mjpg',
                         ),
                       ),
                     );

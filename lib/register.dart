@@ -244,7 +244,7 @@ class _RegisterPageState extends State<Register> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: _registerUser, // ✅ Calls Firebase function
+                        onPressed: _registerUser, //
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFA7C7E7),
                           shape: RoundedRectangleBorder(
