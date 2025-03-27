@@ -4,6 +4,22 @@ A new Flutter project.
 
 ## Getting Started
 
+Step 1
+Make sure Flutter is installed
+
+Step 2 
+in the flutter terminal run : flutter pub get
+
+Step 3
+Connect to a device in device manager
+
+step 4
+Run the flutter files 
+
+Visit our website:
+https://syedatahera13.wixsite.com/fridgefinds
+
+
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
