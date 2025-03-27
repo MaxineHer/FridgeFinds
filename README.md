@@ -1,32 +1,27 @@
-# fridge_finds
+# WEBSITE:
 
-A new Flutter project.
+Visit our website: https://syedatahera13.wixsite.com/fridgefinds
 
-## Getting Started
+# RUNNING FRIDGEFINDS
 
-Step 1
-Make sure Flutter is installed
+## Pi Startup
 
-Step 2 
-in the flutter terminal run : flutter pub get
+This was made using a Raspberry Pi 4 Model B. Every installation was done with default settings. This is assuming A raspberry pi camera has been installed and 2 additional USB cameras have been attached
 
-Step 3
-Connect to a device in device manager
+Before running:
+Run sudo apt-get update in the command line to make sure that your package manager has the latest information
 
-step 4
-Run the flutter files 
+1. Install the Apache2 Web Server on Raspberry Pi
+2. Install MySQL on the Raspberry Pi
+3. Install phpMyAdmin on the RaspberryPi
+4. Install Python and create a virtual environment
+6. Install necessary libraries: opencv2, json, requests, datetime, random, pandas, pyzbar, multiprocessing, time, http, io, picamera2, pytessaract, pymysql
+7. Start your Python virtual environment with command "source /home/pi/my-env/bin/activate"
+8. Type command "python3 allref.py" and press enter. This should run the code associated with the smart refrigerator
 
-Visit our website:
-https://syedatahera13.wixsite.com/fridgefinds
+## Flutter Application Startup
 
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Make sure flutter is installed
+2. In the flutter terminal run: flutter pub get
+3. Connect to a device in device manager
+4. Run the flutter files with command: flutter run
