@@ -21,7 +21,17 @@ Run sudo apt-get update in the command line to make sure that your package manag
 
 ## Flutter Application Startup
 
-1. Make sure flutter is installed
-2. In the flutter terminal run: flutter pub get
-3. Connect to a device in device manager
-4. Run the flutter files with command: flutter run
+Prerequisites:
+-	Flutter installed on your machine
+-	Android Studio 
+-	Firebase account for Firestore Database
+
+Running the project:
+1.  Clone our GitHub repository link:
+      https://github.com/MaxineHer/FridgeFinds.git
+2.	navigate to the project directory, main, and copy all the files by running:
+  git clone --branch main https://github.com/MaxineHer/FridgeFinds.git    
+3.	create a new flutter project in flutter.
+4.	Import all the copied files into the new flutter project
+5.	Install dependencies for flutter, run the following command in the project terminal: flutter pub get
+6.	Then run the following command to execute the project: flutter run
